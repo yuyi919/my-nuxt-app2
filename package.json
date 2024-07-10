@@ -15,11 +15,15 @@
     "nuxt": "^3.12.3",
     "vue": "latest"
   },
-  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903",
+  "packageManager": "pnpm@9.5.0",
   "devDependencies": {
+    "@satorijs/core": "4.1.0",
     "@cloudflare/workers-types": "^4.20240620.0",
+    "crossws": "^0.2.4",
+    "cordis": "3.16.0",
     "h3": "^1.12.0",
     "nitro-cloudflare-dev": "^0.1.5",
+    "node-fetch-native": "^1.6.4",
     "wrangler": "^3.63.1"
   }
 }
