@@ -7,17 +7,17 @@ export default defineNuxtConfig({
   //   // transpile: ["@/server/utils/wss.cjs", "@satorijs/core"],
   // },
   nitro: {
-    preset: "cloudflare-pages",
+    // preset: "cloudflare-pages",
     experimental: {
       websocket: true,
     },
     esbuild: {
       options: {
         target: "es2020",
-        minify: false,
+        // minify: false,
       },
     },
   },
 
-  modules: ["nitro-cloudflare-dev"],
+  // modules: ["nitro-cloudflare-dev"],
 });

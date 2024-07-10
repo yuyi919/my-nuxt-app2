@@ -3,11 +3,11 @@ import {
   HTTP,
   Bot as SatoriApi,
   ForkScope as _ForkScope,
-  GetEvents,
+  type GetEvents,
   Universal,
   Session,
-  Element
-} from '@satorijs/core'
+  Element,
+} from "@satorijs/core";
 
 // export class Context extends SatoriContext {
 //   constructor(config: any = {}) {
@@ -21,13 +21,7 @@ import {
 //   }
 // }
 
-export type ForkScope = _ForkScope<Context>
-export type Events = GetEvents<Context>
+export type ForkScope = _ForkScope<Context>;
+export type Events = GetEvents<Context>;
 
-export {
-  Context,
-  SatoriApi,
-  Universal,
-  Session,
-  Element
-}
+export { Context, SatoriApi, Universal, Session, Element };
