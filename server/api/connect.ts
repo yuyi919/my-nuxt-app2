@@ -129,8 +129,9 @@ export default defineWebSocketHandler({
     console.log("peer close", peer);
   },
   async open(peer) {
+    peer.send({ user: "peer open start" });
     const host = await client;
-    peer.send({ user: "peer open" });
+    peer.send({ user: "peer open success" });
     console.log("peer open", peer);
     host.socket.addEventListener("message", ({ data }) => {
       const parsed: Payload = JSON.parse(data.toString());
