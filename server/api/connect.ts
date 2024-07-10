@@ -1,16 +1,3 @@
-// import "node-fetch-native/polyfill"
-// import { Wss } from "@/server/utils/wss.mjs";
-// import { createRequire } from "node:module";
-// const require = createRequire(import.meta.url);
-// export default defineWebSocketHandler({
-//   open() {
-//     const StringDecoder = require("string_decoder").StringDecoder;
-//   },
-// });
-const config = {
-  timeout: undefined,
-  headers: {},
-};
 const getGateway = async () => (await $get("/gateway")) as { url: string };
 
 class WsClient {
@@ -134,21 +121,23 @@ class WsClient {
     return client;
   }
 }
+
+let client: Promise<WsClient> = WsClient.link();
 export default defineWebSocketHandler({
   message() {},
   close(peer, details) {
     console.log("peer close", peer);
   },
   async open(peer) {
-    const client = await WsClient.link();
+    const host = await client;
     peer.send({ user: "peer open" });
     console.log("peer open", peer);
-    client.socket.addEventListener("message", ({ data }) => {
+    host.socket.addEventListener("message", ({ data }) => {
       const parsed: Payload = JSON.parse(data.toString());
       console.log(peer, parsed);
       peer.send({ type: "message", data });
     });
-    client.socket.addEventListener("error", (error) => {
+    host.socket.addEventListener("error", (error) => {
       peer.send({ type: "error", error });
     });
   },
