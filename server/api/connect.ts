@@ -122,7 +122,7 @@ class WsClient {
   }
 }
 
-let client: Promise<WsClient> = WsClient.link();
+let client: Promise<WsClient> | undefined;
 export default defineWebSocketHandler({
   message() {},
   close(peer, details) {
@@ -130,7 +130,7 @@ export default defineWebSocketHandler({
   },
   async open(peer) {
     peer.send({ user: "peer open start" });
-    const host = await client;
+    const host = await (client ??= WsClient.link());
     peer.send({ user: "peer open success" });
     console.log("peer open", peer);
     host.socket.addEventListener("message", ({ data }) => {
