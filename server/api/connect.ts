@@ -134,20 +134,22 @@ class WsClient {
     return client;
   }
 }
-let _client: Promise<WsClient> | undefined = undefined;
 export default defineWebSocketHandler({
   message() {},
   close(peer, details) {
     console.log("peer close", peer);
   },
   async open(peer) {
-    peer.send({ message: "peer open" });
-    const client = await (_client ??= WsClient.link());
-    peer.send({ message: "peer connect" });
-    client.socket.addEventListener("message", ({ data }) => {
-      const parsed: Payload = JSON.parse(data.toString());
+    const client = await WsClient.link();
+    peer.send({ user: "peer open" });
+    console.log("peer open", peer);
+    client.socket.addEventListener("message", ({ data: e }) => {
+      const parsed: Payload = JSON.parse(e.toString());
       console.log(peer, parsed);
-      peer.send(data);
+      peer.send({ type: "message", e });
+    });
+    client.socket.addEventListener("error", (e) => {
+      peer.send({ type: "error", e });
     });
   },
 });
