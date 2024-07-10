@@ -143,13 +143,13 @@ export default defineWebSocketHandler({
     const client = await WsClient.link();
     peer.send({ user: "peer open" });
     console.log("peer open", peer);
-    client.socket.addEventListener("message", ({ data: e }) => {
-      const parsed: Payload = JSON.parse(e.toString());
+    client.socket.addEventListener("message", ({ data }) => {
+      const parsed: Payload = JSON.parse(data.toString());
       console.log(peer, parsed);
-      peer.send({ type: "message", e });
+      peer.send({ type: "message", data });
     });
-    client.socket.addEventListener("error", (e) => {
-      peer.send({ type: "error", e });
+    client.socket.addEventListener("error", (error) => {
+      peer.send({ type: "error", error });
     });
   },
 });
