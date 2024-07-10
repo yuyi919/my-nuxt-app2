@@ -144,8 +144,10 @@ export default defineWebSocketHandler({
     console.log("peer close", peer);
   },
   async open(peer) {
+    const { url } = await getGateway();
     const client = await WsClient.link();
     console.log("peer open", peer);
+    peer.send({ url });
     client.socket.on("message", (e) => {
       const parsed: Payload = JSON.parse(e.toString());
       console.log(peer, parsed);
