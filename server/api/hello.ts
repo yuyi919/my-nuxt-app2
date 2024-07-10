@@ -6,9 +6,9 @@ const users = new Map<string, { online: boolean }>();
 const wsHooks = defineHooks({
   async open(peer) {
     try {
-      const { Context } = await import("../utils/satori");
-      const context = new Context();
-      console.log(`[ws] open ${peer}`, context);
+      // const { Context } = await import("../utils/satori");
+      // const context = new Context();
+      // console.log(`[ws] open ${peer}`, context);
     } catch (error) {
       console.error(error);
       peer.send({
