@@ -1,3 +1,5 @@
+import { QQ } from "#imports";
+
 const getGateway = async () => (await $get("/gateway")) as { url: string };
 
 class WsClient {
@@ -98,6 +100,20 @@ class WsClient {
         // const session = await adaptSession(this.bot, parsed);
         // if (session) this.bot.dispatch(session);
         // this.bot.logger.debug(session)
+        if (parsed.t === "MESSAGE_CREATE") {
+          const payload: QQ.Message.ChannelRequest = {
+            content: JSON.stringify(parsed),
+            // message_reference: {
+            //   message_id: parsed.d?.id!,
+            // },
+            // event_id: "id" in parsed ? parsed.id as string : undefined,
+            msg_id: parsed.d?.id,
+          };
+          console.log(await $get(`/guilds/${parsed.d!.guild_id!}`))
+          console.log(await $get(`/channels/${parsed.d!.channel_id!}`))
+          console.log("post", payload);
+          $post(`/channels/${parsed.d!.channel_id!}/messages`, payload).then(console.log);
+        }
       } else {
         $get("/users/@me").then(console.log);
       }
@@ -115,7 +131,13 @@ class WsClient {
 
   static async link() {
     const { url } = await getGateway();
-    const cl = new WebSocket(url);
+    const cl =
+      typeof WebSocket !== "undefined"
+        ? new WebSocket(url)
+        : await (async () => {
+            const { WebSocket } = await import("ws");
+            return new WebSocket(url) as any as WebSocket;
+          })();
     const client = new WsClient(cl);
     client.accept(client.socket);
     return client;
